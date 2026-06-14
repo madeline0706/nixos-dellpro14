@@ -2,6 +2,7 @@
 {
   wayland.windowManager.sway = {
     enable = true;
+    config = null;
     extraConfig = ''
       # Modifier key [ALT]
       set $mod Mod1
