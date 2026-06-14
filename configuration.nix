@@ -30,8 +30,8 @@
     }
     nixup() {
       cd ~/nixos-config && \
-      sudo nixos-rebuild switch && \
       git add . && \
+      sudo nixos-rebuild switch --flake .#arcanine-nix && \
       git commit -m "''${1:-Update config}" && \
       git push
     }

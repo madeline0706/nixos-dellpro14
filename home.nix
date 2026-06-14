@@ -4,6 +4,7 @@
 
   home.packages = with pkgs; [
     terminus_font
+    playerctl
   ];
   imports = [
     ./sway.nix
