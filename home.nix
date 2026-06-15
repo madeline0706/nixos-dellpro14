@@ -14,6 +14,8 @@
     chafa
     file
     swaylock-effects
+    gtklock
+    gtklock-userinfo-module
   ];
 
   xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
@@ -66,4 +68,50 @@
     ./mako.nix
     ./scripts.nix
   ];
+  xdg.configFile."gtklock/config.ini".text = '';
+    [main]
+    modules = clock-module.so
+    time-format = %I:%M:%S %p
+
+    [clock-module]
+  '';
+
+  xdg.configFile."gtklock/style.css".text = '';
+    window {
+      background-color: #000000;
+    }
+
+    #clock-label {
+      font-family: "Terminus";
+      font-size: 24px;
+      color: #8b3a5a;
+    }
+
+    #body {
+      background-color: #000000;
+    }
+
+    #unlock-button {
+      background-color: #000000;
+      border: 1px solid #8b3a5a;
+      color: #8b3a5a;
+      font-family: "Terminus";
+      font-size: 12px;
+    }
+
+    entry {
+      background-color: #000000;
+      border: 1px solid #8b3a5a;
+      color: #8b3a5a;
+      font-family: "Terminus";
+      font-size: 12px;
+      caret-color: #8b3a5a;
+    }
+
+    label {
+      font-family: "Terminus";
+      font-size: 12px;
+      color: #8b3a5a;
+    }
+  '';
 }
