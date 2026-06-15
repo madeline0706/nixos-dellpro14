@@ -1,14 +1,75 @@
 # Dell Pro 14 NixOS config
 #
-
 { config, lib, pkgs, ... }:
 {
-  security.pam.services.waylock = {};
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
+  # Boat
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Hardware
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  programs.sway.enable = true;
+
+  # Networking
+  networking.hostName = "arcanine-nix";
+  networking.networkmanager.enable = true;
   services.tailscale.enable = true;
-  services.displayManager.ly.enable = true;
+
+  # Time
+  time.timeZone = "America/Los_Angeles";
+
+  # Nix settings
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Greeter / WM
+  services.displayManager.ly = {
+    enable = true;
+    settings = {
+      session_log = "null";
+    };
+  };
+  programs.sway.enable = true;
+
+  # Audiojungle
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # Terminal file picker
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-termfilechooser
+    ];
+    config.sway = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+    };
+    config.common = {
+      "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+    };
+  };
+
+  environment.sessionVariables = {
+    GTK_USE_PORTAL = "1";
+  };
+
+  # PAM
+  security.pam.services.waylock = {};
+
+  # The best browser
+  programs.firefox.enable = true;
+
+  # Global packages
   environment.systemPackages = with pkgs; [
     waybar
     fastfetch
@@ -17,17 +78,16 @@
     tailscale
   ];
 
-  imports =
-    [
-      ./hardware-configuration.nix
+  # Users
+  users.users.madeline = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "video" ];
+    packages = with pkgs; [
+      tree
     ];
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  networking.hostName = "arcanine-nix";
-  networking.networkmanager.enable = true;
-  time.timeZone = "America/Los_Angeles";
+  };
 
-  # I am lazy
+  # Shell helpers (Shellpers)
   programs.bash.interactiveShellInit = ''
     nixpush() {
       cd ~/nixos-config && \
@@ -43,50 +103,6 @@
       git push
     }
   '';
-
-  # Hey hey thats me
-  users.users.madeline = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "video" ];
-    packages = with pkgs; [
-      tree
-    ];
-  };
-
-xdg.portal = {
-  enable = true;
-  extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-termfilechooser
-  ];
-  config.sway = {
-    default = [ "gtk" ];
-    "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
-  };
-  config.common = {
-    "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
-  };
-};
-
-
-
-
-  # The best browser
-  programs.firefox.enable = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # PipeWire
-  security.rtkit.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  environment.sessionVariables = {
-    GTK_USE_PORTAL = "1";
-  };
 
   system.stateVersion = "26.05";
 }
