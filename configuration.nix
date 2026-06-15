@@ -3,6 +3,8 @@
 { config, lib, pkgs, ... }:
 {
   security.pam.services.waylock = {};
+  hardware.cpu.amd.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
   programs.sway.enable = true;
   services.tailscale.enable = true;
   services.displayManager.ly.enable = true;
