@@ -11,6 +11,7 @@
     j4-dmenu-desktop
     xdg-desktop-portal-termfilechooser
   ];
+
   xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
     [filechooser]
     cmd=${config.home.homeDirectory}/.config/xdg-desktop-portal-termfilechooser/lf-wrapper.sh
@@ -25,9 +26,10 @@
       save="$3"
       path="$4"
       out="$5"
-      foot --app-id=filechooser -- lf --chooser-file="$out" "$path"
+      foot --app-id=filechooser -- sh -c "LF_CHOOSER_FILE='$out' lf '$path'"
     '';
   };
+
   imports = [
     ./sway.nix
     ./waybar.nix
