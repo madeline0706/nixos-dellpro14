@@ -53,6 +53,10 @@ xdg.portal = {
     xdg-desktop-portal-wlr
     xdg-desktop-portal-termfilechooser
   ];
+  config.sway = {
+    default = [ "gtk" ];
+    "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+  };
   config.common = {
     "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
   };
