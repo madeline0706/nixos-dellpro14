@@ -13,6 +13,7 @@
     xdg-desktop-portal-termfilechooser
     chafa
     file
+    swaylock-effects
   ];
 
   xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''

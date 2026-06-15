@@ -1,20 +1,21 @@
 { config, pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    swaylock-effects
+  ];
+
   wayland.windowManager.sway = {
     enable = true;
     config = null;
     extraConfig = ''
       # Modifier key [ALT]
       set $mod Mod1
-
       # Appearance
       default_border pixel 1
       gaps inner 4
       font pango:monospace 10
-
       # Borders
       client.focused #8b3a5a #8b3a5a  #ffffff #8b3a5a
-
       # Waybar
       bar {
           swaybar_command waybar
@@ -32,6 +33,8 @@
       bindsym $mod+Shift+e exit
       # Reload
       bindsym $mod+r reload
+      # Lock screen
+      bindsym $mod+Escape exec swaylock -f --screenshots --clock --indicator --effect-blur 7x5 --effect-vignette 0.5:0.5
       # Brightness keys
       bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
       bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
@@ -45,8 +48,10 @@
       # Autostart
       exec arrpc
       exec swayidle -w \
-          timeout 300 'swaymsg "output * dpms off"' \
-          resume 'swaymsg "output * dpms on"'
+          timeout 300 'swaylock -f --screenshots --clock --indicator --effect-blur 7x5 --effect-vignette 0.5:0.5' \
+          timeout 600 'swaymsg "output * dpms off"' \
+          resume 'swaymsg "output * dpms on"' \
+          before-sleep 'swaylock -f --screenshots --clock --indicator --effect-blur 7x5 --effect-vignette 0.5:0.5'
       for_window [class=".*"] inhibit_idle fullscreen
       for_window [app_id=".*"] inhibit_idle fullscreen
       exec foot
