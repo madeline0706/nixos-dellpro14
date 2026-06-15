@@ -74,5 +74,9 @@ xdg.portal = {
     pulse.enable = true;
   };
 
+  environment.sessionVariables = {
+    GTK_USE_PORTAL = "1";
+  };
+
   system.stateVersion = "26.05";
 }
