@@ -11,6 +11,10 @@
 
   networking.hostName = "bulbasaur-nix";
 
+  programs.steam.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+
   # Use latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # DRM Log noise in Ly
