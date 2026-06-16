@@ -5,6 +5,8 @@
 
   services.displayManager.ly.enable = true;
 
+  services.tailscale.enable = true;
+
   environment.systemPackages = with pkgs; [
     waybar
     fastfetch
@@ -23,6 +25,7 @@
     fastfetch
     btop
     ncdu
+    pulsemixer
     tailscale
   ];
 
