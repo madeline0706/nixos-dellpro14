@@ -31,12 +31,13 @@
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
       xdg-desktop-portal-termfilechooser
     ];
     config.sway = {
-      default = [ "gtk" ];
+      default = lib.mkForce [ "wlr" ];
       "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
     };
     config.common = {
