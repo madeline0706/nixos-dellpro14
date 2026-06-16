@@ -13,7 +13,8 @@
 
   # Use latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
+  # DRM Log noise in Ly
+  boot.consoleLogLevel =3;
   # AMD GPU
   hardware.graphics = {
     enable = true;
