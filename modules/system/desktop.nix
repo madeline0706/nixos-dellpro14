@@ -23,6 +23,7 @@
     fastfetch
     btop
     ncdu
+    tailscale
   ];
 
   xdg.portal = {
