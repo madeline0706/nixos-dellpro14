@@ -7,9 +7,13 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nyx = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, nyx, ... }:
     let
       mkHost = { system, hostname, extraModules ? [], homeModules ? [] }:
         nixpkgs.lib.nixosSystem {
@@ -18,6 +22,7 @@
             ./hosts/${hostname}/configuration.nix
             ./modules/system/common.nix
             ./modules/system/desktop.nix
+            nyx.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

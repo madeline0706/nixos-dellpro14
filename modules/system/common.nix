@@ -30,6 +30,7 @@
       git push
     }
   '';
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
   nixpkgs.config.allowUnfree = true;
   programs.firefox.enable = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
