@@ -2,6 +2,8 @@
 {
   home.stateVersion = "26.05";
 
+  home.file."wallpapers/.keep".text = "";
+
   home.packages = with pkgs; [
     terminus_font
     playerctl

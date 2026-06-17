@@ -1,6 +1,14 @@
 { config, pkgs, ... }:
+let
+  random-wallpaper = pkgs.writeShellScriptBin "random-wallpaper" ''
+    pkill swaybg || true
+    wallpaper=$(find "$HOME/wallpapers" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) 2>/dev/null | shuf -n 1)
+    [ -n "$wallpaper" ] && ${pkgs.swaybg}/bin/swaybg -i "$wallpaper" -m fill &
+  '';
+in
 {
   home.packages = with pkgs; [
+    random-wallpaper
   ];
 
   wayland.windowManager.sway = {
@@ -103,6 +111,7 @@
       };
 
       startup = [
+        { command = "${random-wallpaper}/bin/random-wallpaper"; always = true; }
         { command = "arrpc"; }
 	{ command = "swayidle -w timeout 180 'waylock' timeout 900 'systemctl suspend' timeout 3600 'systemctl poweroff' resume 'swaymsg \"output * dpms on\"'"; }
 	#{ command = "swayidle -w timeout 300 'waylock' timeout 600 'swaymsg \"output * dpms off\"' timeout 900 'systemctl suspend' timeout 3600 'systemctl poweroff' resume 'swaymsg \"output * dpms on\"'"; }
