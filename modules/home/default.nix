@@ -78,7 +78,7 @@ in
       save="$3"
       path="$4"
       out="$5"
-      foot --app-id=filechooser -- sh -c 'LF_CHOOSER_FILE="$1" lf "$2"' -- "$out" "$path"
+      foot --app-id=filechooser -- sh -c 'LF_CHOOSER_FILE="$1" LF_CHOOSER_DIRECTORY="$2" lf "$3"' -- "$out" "$directory" "$path"
     '';
   };
 
@@ -93,6 +93,17 @@ in
         xdg-open "$f"
       fi
     }}
+    cmd choose-dir &{{
+      if [ -n "$LF_CHOOSER_FILE" ] && [ -d "$f" ]; then
+        echo "$f" > "$LF_CHOOSER_FILE"
+        lf -remote "send $id quit"
+      elif [ -d "$f" ]; then
+        lf -remote "send $id cd \"$f\""
+      else
+        lf -remote "send $id open"
+      fi
+    }}
+    map <enter> choose-dir
   '';
 
   xdg.configFile."lf/previewer" = {
