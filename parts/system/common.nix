@@ -7,6 +7,7 @@
       extraGroups = [ "wheel" "video" ];
       packages = with pkgs; [
         tree
+	git
       ];
     };
     programs.bash.interactiveShellInit = ''

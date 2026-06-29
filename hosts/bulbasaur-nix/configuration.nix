@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
   ];
+  services.openssh.enable = true;
   home-manager.users.madeline.imports = [ ./displays.nix ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
